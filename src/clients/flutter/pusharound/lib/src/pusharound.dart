@@ -3,7 +3,7 @@ library pusharound;
 import 'push_provider.dart';
 import 'push_notification.dart';
 
-const _pusharoundPrefix = 'pusharound_';
+const _pusharoundKey = 'pusharound';
 
 class Pusharound {
   final List<PushProvider> _providers;
@@ -11,10 +11,11 @@ class Pusharound {
   Pusharound(List<PushProvider> providers) : _providers = providers;
 
   void setListener(Function(PushNotification) onNotification) {
-    newListener(data) {
-      var isPusharound = data['title'].toString().startsWith(_pusharoundPrefix);
+    newListener(Map<String, dynamic> data) {
+      print("data: $data");
+      var isPusharound = data.containsKey(_pusharoundKey);
       if (isPusharound) {
-        (data['title'] as String).replaceFirst(_pusharoundPrefix, '');
+        data.remove(_pusharoundKey);
       }
       onNotification(PushNotification(isPusharound, data));
     }
