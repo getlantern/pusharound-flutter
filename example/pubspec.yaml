@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  crypto: 3.0.3
   provider: ^6.0.0
   pushy_flutter: 2.0.18
   pusharound:

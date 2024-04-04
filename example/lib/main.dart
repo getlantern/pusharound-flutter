@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,13 +40,19 @@ class _AppState extends ChangeNotifier {
   ]);
 
   _AppState() {
-    pusharound.setListener((notification) {
+    pusharound.setListeners((notification) {
       if (notification.fromPusharound) {
         pusharoundNotifications.add(notification.data['message']);
       } else {
         nonPusharoundNotifications.add(notification.data['message']);
       }
       notifyListeners();
+    }, (stream) {
+      var streamMD5 = md5.convert(utf8.encode(stream)).toString();
+      pusharoundNotifications.add("stream: $streamMD5");
+      notifyListeners();
+    }, (exception) {
+      print("pusharound exception: $exception");
     });
   }
 }
