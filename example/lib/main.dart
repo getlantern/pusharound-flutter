@@ -9,11 +9,11 @@ import 'package:pusharound/pusharound.dart';
 
 void main() {
   // TODO: not set up for Android or iOS (see https://pushy.me/docs/additional-platforms/flutter)
-  runApp(_SimpleApp());
+  runApp(const _SimpleApp());
 }
 
 class _SimpleApp extends StatelessWidget {
-  const _SimpleApp({super.key});
+  const _SimpleApp();
 
   @override
   Widget build(BuildContext context) {
