@@ -10,7 +10,6 @@ class PushyProvider implements PushProvider {
     pushy.Pushy.setNotificationListener(onNotification);
   }
 
-  @override
   void subscribe(String topic) async {
     if (await pushy.Pushy.isRegistered()) {
       await pushy.Pushy.subscribe(topic);

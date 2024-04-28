@@ -109,7 +109,7 @@ class Pusharound {
       }
 
       var collated = '';
-      for (var i = 0; i < lastIndex; i++) {
+      for (var i = 0; i <= lastIndex; i++) {
         var data = stream[i];
         if (data == null) {
           // We're missing a message; wait for future notifications.
