@@ -1,38 +1,8 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+# Pusharound
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+A client-side package for the pusharound protocol. For use in Flutter applications, in conjunction with the [pusharound back-end library](https://github.com/getlantern/pusharound). Currently built around [pushy](pushy.me), though more providers may be added in the future.
 
-A client-side package for the pusharound protocol. For use in Flutter applications. Currently built around [pushy](pushy.me), though more providers may be added in the future.
+Pusharound implements a transport using push notification systems, as described in [The Use of Push Notification in Censorship Circumvention](https://www.petsymposium.org/foci/2023/foci-2023-0009.pdf) by Diwen Xue and Roya Ensafi.
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
-```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+See the /example folder for a standalone example application.
