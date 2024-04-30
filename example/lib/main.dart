@@ -9,10 +9,10 @@ import 'package:pusharound/pusharound.dart';
 
 // This is only needed for Web Push.
 // See https://pushy.me/docs/additional-platforms/flutter
-const pushyAppID = "your-pushy-app-id-here";
+const pushyAppID = "";
 
 void main() {
-  // TODO: not set up for Android or iOS (see https://pushy.me/docs/additional-platforms/flutter)
+  // TODO: Android and iOS need additional permissions (see https://pushy.me/docs/additional-platforms/flutter)
   runApp(const _SimpleApp());
 }
 
@@ -64,7 +64,9 @@ class _AppState extends ChangeNotifier {
     });
 
     Pushy.listen();
-    Pushy.setAppId(pushyAppID);
+    if (pushyAppID != "") {
+      Pushy.setAppId(pushyAppID);
+    }
 
     () async {
       var token = await Pushy.register();

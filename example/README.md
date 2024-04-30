@@ -1,16 +1,5 @@
 # example
 
-A new Flutter project.
+An example Flutter application utilizing the Pusharound system, backed by [Pushy](https://pushy.me). With a Pushy account, one can send notifications to the client - directly from Pushy, or via a Pusharound back-end. Streams can also be sent to the client, which will display an MD5 checksum of the stream.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note that Pushy does not support native desktop clients and therefore neither does this example application. To test on desktop, build for Web (e.g. Chrome). Pushy will use WebPush to deliver notifications to the app.
