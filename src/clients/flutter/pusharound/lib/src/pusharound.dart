@@ -24,6 +24,7 @@ const _streamCompleteKey = "pusharound-stream-ok";
 // many messages. One-off messages use custom keys to specify user data.
 const _streamDataKey = "pusharound-stream-data";
 
+/// The governing class for receiving pusharound messages.
 class Pusharound {
   final List<PushProvider> _providers;
 
@@ -33,8 +34,11 @@ class Pusharound {
   // Stream ID -> index of last message if received.
   final Map<String, int> _lastIndex = {};
 
+  /// Initializes a Pusharound instance with the given push notification
+  /// providers.
   Pusharound(this._providers);
 
+  /// Registers listeners for notifications, streams, and exceptions.
   void setListeners(Function(PushNotification) onNotification,
       Function(String) onStream, Function(Exception) onException) {
     // Define a function for handling raw notification data.
