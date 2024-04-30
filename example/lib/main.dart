@@ -7,6 +7,10 @@ import 'package:pushy_flutter/pushy_flutter.dart';
 
 import 'package:pusharound/pusharound.dart';
 
+// This is only needed for Web Push.
+// See https://pushy.me/docs/additional-platforms/flutter
+const pushyAppID = "your-pushy-app-id-here";
+
 void main() {
   // TODO: not set up for Android or iOS (see https://pushy.me/docs/additional-platforms/flutter)
   runApp(const _SimpleApp());
@@ -34,6 +38,9 @@ class _SimpleApp extends StatelessWidget {
 class _AppState extends ChangeNotifier {
   var pusharoundNotifications = List<String>.empty(growable: true);
   var nonPusharoundNotifications = List<String>.empty(growable: true);
+  var deviceToken = "not yet obtained";
+
+  Exception? currentException;
 
   var pusharound = Pusharound([
     PushyProvider(),
@@ -52,8 +59,18 @@ class _AppState extends ChangeNotifier {
       pusharoundNotifications.add("stream: $streamMD5");
       notifyListeners();
     }, (exception) {
-      print("pusharound exception: $exception");
+      currentException = exception;
+      notifyListeners();
     });
+
+    Pushy.listen();
+    Pushy.setAppId(pushyAppID);
+
+    () async {
+      var token = await Pushy.register();
+      deviceToken = token;
+      notifyListeners();
+    }();
   }
 }
 
@@ -66,14 +83,6 @@ class _HomePageState extends State<_HomePage> {
   @override
   void initState() {
     super.initState();
-
-    Pushy.listen();
-    Pushy.setAppId('657e7007d13f88ac44aa9bc1'); // only required for WebPush
-
-    () async {
-      var token = await Pushy.register();
-      print("Pushy token: $token");
-    }();
   }
 
   @override
@@ -82,7 +91,30 @@ class _HomePageState extends State<_HomePage> {
 
     var appState = context.watch<_AppState>();
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (appState.currentException != null) {
+        showDialog(
+            context: context,
+            builder: (BuildContext buildContext) {
+              return AlertDialog(
+                title: const Text("Exception"),
+                content: Text("${appState.currentException}"),
+                actions: <Widget>[
+                  TextButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        Navigator.of(buildContext).pop();
+                        appState.currentException = null;
+                      })
+                ],
+              );
+            });
+      }
+    });
+
     return Scaffold(
+      bottomNavigationBar:
+          SelectableText("device token: ${appState.deviceToken}"),
       body: Row(
         children: [
           Expanded(
