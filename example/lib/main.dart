@@ -48,7 +48,9 @@ class _AppState extends ChangeNotifier {
 
   _AppState() {
     pusharound.setListeners((notification) {
-      if (notification.fromPusharound) {
+      if (!notification.data.containsKey("message")) {
+        currentException = Exception("received notification with no message");
+      } else if (notification.fromPusharound) {
         pusharoundNotifications.add(notification.data['message']);
       } else {
         nonPusharoundNotifications.add(notification.data['message']);
