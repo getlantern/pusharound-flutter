@@ -12,7 +12,6 @@ import 'package:pusharound/pusharound.dart';
 const pushyAppID = "";
 
 void main() {
-  // TODO: Android and iOS need additional permissions (see https://pushy.me/docs/additional-platforms/flutter)
   runApp(const _SimpleApp());
 }
 
