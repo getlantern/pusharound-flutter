@@ -12,17 +12,17 @@ const _streamIDKey = 'pusharound-stream-id';
 // One-off messages use this stream ID.
 const _nullStreamID = '00000000';
 
-// This key will be mapped to a counter indicating this message's position in
+// This key will be mapped to an integer indicating this message's position in
 // the stream.
-const _streamCounterKey = 'pusharound-stream-counter';
+const _streamIndexKey = 'pusharound-index';
 
 // This key is included only in the last message of a stream and is mapped to an
 // empty string.
-const _streamCompleteKey = "pusharound-stream-ok";
+const _streamCompleteKey = "pusharound-ok";
 
 // This key is included only for notifications which are part of a stream of
 // many messages. One-off messages use custom keys to specify user data.
-const _streamDataKey = "pusharound-stream-data";
+const _streamDataKey = "pusharound-data";
 
 /// The governing class for receiving pusharound messages.
 class Pusharound {
@@ -44,14 +44,14 @@ class Pusharound {
     // Define a function for handling raw notification data.
     notificationHandler(Map<String, dynamic> data) {
       var streamID = data[_streamIDKey];
-      var streamCounterRaw = data[_streamCounterKey];
+      var streamIndexRaw = data[_streamIndexKey];
       var streamComplete = data[_streamCompleteKey];
       var streamData = data[_streamDataKey];
 
       // Clean up pusharound metadata. These keys won't all be included on every
       // message, but it doesn't hurt to try removing them all just in case.
       data.remove(_streamIDKey);
-      data.remove(_streamCounterKey);
+      data.remove(_streamIndexKey);
       data.remove(_streamCompleteKey);
       data.remove(_streamDataKey);
 
@@ -74,7 +74,7 @@ class Pusharound {
 
       // At this point, we are handling a stream.
 
-      if (streamCounterRaw == null) {
+      if (streamIndexRaw == null) {
         onException(Exception("received stream without counter"));
         return;
       }
@@ -90,20 +90,20 @@ class Pusharound {
         return;
       }
 
-      int streamCounter;
+      int index;
       try {
-        streamCounter = int.parse(streamCounterRaw);
+        index = int.parse(streamIndexRaw);
       } on FormatException catch (e) {
         onException(Exception("received malformed stream counter: $e"));
         return;
       }
 
       if (streamComplete != null) {
-        _lastIndex[streamID] = streamCounter;
+        _lastIndex[streamID] = index;
       }
 
       var stream = _incompleteStreams.putIfAbsent(streamID, () => {});
-      stream[streamCounter] = streamData;
+      stream[index] = streamData;
 
       // If we have not received the entire stream, we must wait for future
       // notifications.
