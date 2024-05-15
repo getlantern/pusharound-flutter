@@ -1,11 +1,10 @@
 import 'dart:convert';
+
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:pushy_flutter/pushy_flutter.dart';
-
 import 'package:pusharound/pusharound.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 
 // This is only needed for Web Push.
 // See https://pushy.me/docs/additional-platforms/flutter
@@ -72,6 +71,7 @@ class _AppState extends ChangeNotifier {
     () async {
       var token = await Pushy.register();
       deviceToken = token;
+      print("Device token: $token");
       notifyListeners();
     }();
   }
@@ -116,28 +116,32 @@ class _HomePageState extends State<_HomePage> {
     });
 
     return Scaffold(
-      bottomNavigationBar:
-          SelectableText("device token: ${appState.deviceToken}"),
-      body: Row(
-        children: [
-          Expanded(
-            child: _NotificationsColumn(
-              'Pusharound Notifications',
-              appState.pusharoundNotifications,
+      persistentFooterButtons: [
+        SelectableText("device token: ${appState.deviceToken}")
+      ],
+      persistentFooterAlignment: AlignmentDirectional.center,
+      body: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: _NotificationsColumn(
+                'Pusharound Notifications',
+                appState.pusharoundNotifications,
+              ),
             ),
-          ),
-          VerticalDivider(
-            color: theme.colorScheme.onBackground,
-            thickness: 2.0,
-            width: 0,
-          ),
-          Expanded(
-            child: _NotificationsColumn(
-              'Non-Pusharound Notifications',
-              appState.nonPusharoundNotifications,
+            VerticalDivider(
+              color: theme.colorScheme.onBackground,
+              thickness: 2.0,
+              width: 0,
             ),
-          ),
-        ],
+            Expanded(
+              child: _NotificationsColumn(
+                'Non-Pusharound Notifications',
+                appState.nonPusharoundNotifications,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -152,7 +156,7 @@ class _NotificationsColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final style = theme.textTheme.displayMedium!.copyWith(
+    final style = theme.textTheme.titleMedium!.copyWith(
       color: theme.colorScheme.primary,
     );
 
