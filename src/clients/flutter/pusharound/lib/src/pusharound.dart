@@ -24,6 +24,15 @@ const _streamCompleteKey = "pusharound-ok";
 // many messages. One-off messages use custom keys to specify user data.
 const _streamDataKey = "pusharound-data";
 
+// A callback to be invoked when a push notification is received.
+typedef OnNotification = void Function(PushNotification);
+
+// A callback to be invoked when a stream is received.
+typedef OnStream = void Function(String);
+
+// A callback to be invoked when an exception is received.
+typedef OnException = void Function(Exception);
+
 /// The governing class for receiving pusharound messages.
 class Pusharound {
   // Stream ID -> { datum index -> datum }
@@ -34,17 +43,17 @@ class Pusharound {
 
   static List<PushProvider> _providers = [];
 
-  static Function(PushNotification) _onNotification = (_) => {};
-  static Function(String) _onStream = (_) => {};
-  static Function(Exception) _onException = (_) => {};
+  static OnNotification _onNotification = (_) => {};
+  static OnStream _onStream = (_) => {};
+  static OnException _onException = (_) => {};
 
   static void setProviders(List<PushProvider> providers) {
     _providers = providers;
   }
 
   /// Registers listeners for notifications, streams, and exceptions.
-  static void setListeners(Function(PushNotification) onNotification,
-      Function(String) onStream, Function(Exception) onException) {
+  static void setListeners(OnNotification onNotification, OnStream onStream,
+      OnException onException) {
     _onNotification = onNotification;
     _onStream = onStream;
     _onException = onException;
