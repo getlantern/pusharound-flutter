@@ -41,12 +41,12 @@ class _AppState extends ChangeNotifier {
 
   Exception? currentException;
 
-  var pusharound = Pusharound([
-    PushyProvider(),
-  ]);
-
   _AppState() {
-    pusharound.setListeners((notification) {
+    Pusharound.setProviders([
+      PushyProvider(),
+    ]);
+
+    Pusharound.setListeners((notification) {
       if (!notification.data.containsKey("message")) {
         currentException = Exception("received notification with no message");
       } else if (notification.fromPusharound) {
